@@ -1,13 +1,13 @@
 import socket
 import threading
 
-# 결과 수신
+# 결과 수신 클래스
 class DisplayOutput:         
     def __init__(self):
         self.observers = []
 
-    def append_observer(self, observer):        # DisplayObserver.update() 저장
-        self.observers.append(observer)         # [DisplayObserver.update()]
+    def append_observer(self, observer):        # DisplayObserver 저장
+        self.observers.append(observer)         # [DisplayObserver]
 
     def noti_observers(self, value):
         for observer in self.observers:
@@ -26,7 +26,12 @@ class DisplayOutput:
                     value = int(data.decode())
                     self.noti_observers(value)
 
-
+# 화면 출력 클래스
+class DisplayObserver:
+    def update(self, value):
+        print(f"Value: {value}")
+        
+# 결과 수신 및 출력 쓰레드 클래스
 class DisplayOutputThread(threading.Thread):
     def __init__(self, display_output):
         super().__init__()
@@ -34,12 +39,6 @@ class DisplayOutputThread(threading.Thread):
 
     def run(self):
         self.display_output.start()
-
-# 화면 출력
-class DisplayObserver:
-    def update(self, value):
-        print(f"Value: {value}")
-
 
 if __name__ == "__main__":
     display_output = DisplayOutput()
