@@ -10,17 +10,17 @@ class KeyboardInput:
     def append_observer(self, observer):    # KeyboardObserver 저장
         self.observers.append(observer)     # [KeyboardObserver] 
 
-    def noti_observers(self, v):               # 결과 전달 함수
+    def noti_observers(self, v):            # 결과 전달 함수
         for observer in self.observers:
-            observer.update(v)       # 출력 프로세서로 전달
+            observer.update(v)              # 출력 프로세서로 전달
             
 # 증감 계산 클래스
-class ValueCal:
+class keyboardCal:
     def __init__(self, keyboard_input) :
-        self.val = 0                # 내부 값
+        self.val = 0                        # 내부 값
         self.keyboard_input = keyboard_input
         
-    def start(self):                # 증감 계산 실행
+    def start(self):                        # 증감 계산 실행
         while True:
             event = keyboard.read_event()
             if event.name == "up":
@@ -43,19 +43,19 @@ class KeyboardObserver:
             
 # 입력 수신과 증감 계산 스레드
 class KeyboardInputThread(threading.Thread):
-    def __init__(self, value_cal):
+    def __init__(self, keyboard_cal):
         super().__init__()
-        self.value_cal = value_cal
+        self.keyboard_cal = keyboard_cal
 
     def run(self):
-        self.value_cal.start()
+        self.keyboard_cal.start()
 
 if __name__ == "__main__":
     keyboard_input = KeyboardInput()
     keyboard_observer = KeyboardObserver()
-    value_cal = ValueCal(keyboard_input)
+    keyboard_cal = keyboardCal(keyboard_input)
     
     keyboard_input.append_observer(keyboard_observer)   
 
-    keyboard_thread = KeyboardInputThread(value_cal)   
+    keyboard_thread = KeyboardInputThread(keyboard_cal)   
     keyboard_thread.start()
