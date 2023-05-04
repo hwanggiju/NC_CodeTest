@@ -26,12 +26,13 @@ class ValueCal:
             if event.name == "up":
                 if event.event_type == "down" :
                     self.val += 1
+                    self.keyboard_input.noti_observers(self.val)
             elif event.name == "down":
                 if event.event_type == "down" :
                     self.val -= 1
+                    self.keyboard_input.noti_observers(self.val)
             else :
                 continue
-            self.keyboard_input.noti_observers(self.val)
 
 # 결과 전달 클래스
 class KeyboardObserver:
@@ -40,7 +41,7 @@ class KeyboardObserver:
             s.connect(('localhost', 5000))
             s.sendall(str(value).encode())
             
-# 
+# 입력 수신과 증감 계산 스레드
 class KeyboardInputThread(threading.Thread):
     def __init__(self, value_cal):
         super().__init__()
